@@ -57,14 +57,14 @@ const FinalPage = () => {
 
             <Grow in={true} timeout={2000}>
               <Typography variant="body1" sx={{ marginTop: '8px', marginBottom: '16px' }}>
-                The Metropolitan Museum of Art, colloquially known as "the Met", is located in New York City and is the
+                The Metropolitan Museum of Art, colloquially known as the Met, is located in New York City and is the
                 largest art museum in the United States. Its permanent collection contains over two million works,
                 divided among seventeen curatorial departments.
               </Typography>
             </Grow>
             <Zoom in={true} timeout={2000}>
               <Typography variant="body1">
-                The main building, on the eastern edge of Central Park along Museum Mile, is by area one of the world's
+                The main building, on the eastern edge of Central Park along Museum Mile, is by area one of the worlds
                 largest art galleries. A much smaller second location, The Cloisters at Fort Tryon Park in Upper
                 Manhattan, contains an extensive collection of art, architecture, and artifacts from medieval Europe.
               </Typography>
