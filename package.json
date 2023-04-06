@@ -26,6 +26,9 @@
     "react-bootstrap": "^2.7.2",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.5",
-    "swr": "^2.1.0"
+    "react-use-effect": "^0.0.1",
+    "swr": "^2.1.0",
+    "use-atom": "^0.9.0",
+    "use-router": "^0.4.2"
   }
 }
