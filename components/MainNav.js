@@ -8,6 +8,8 @@ import Link from "next/link"
 import { Button } from '@mui/material';
 import { useAtom } from 'jotai';
 import { searchHistoryAtom } from '@/store';
+import { addToHistory } from '@/lib/userData';
+import { readToken, removeToken } from '@/lib/authenticate';
 
 export default function MainNav() {
     const router = useRouter();
@@ -15,12 +17,12 @@ export default function MainNav() {
     const [isExpanded, setIsExpanded] = useState(false);
     const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
 
-    const Submit = (event) => {
+    async function Submit(event){
         event.preventDefault();
         router.push(`/artwork?title=true&q=${searchField}`);
         setSearchField('');
         setIsExpanded(false);
-        setSearchHistory(current => [...current, `title=true&q=${searchField}`]);
+        setSearchHistory(await addToHistory(`title=true&q=${searchField}`))
     };
 
     const navtoggle = () => {
@@ -30,7 +32,11 @@ export default function MainNav() {
     const onclickbutton = () => {
         setIsExpanded(false);
     }
-    
+    let token = readToken();
+    function logout() {
+    removeToken();
+    router.push('/login');
+    }
     return (
         
         <div>
@@ -44,11 +50,11 @@ export default function MainNav() {
                             <Link href="/" passHref legacyBehavior>
                             <Nav.Link active={router.pathname === "/"}>Home</Nav.Link>
                             </Link>
-                            <Link href="/search" passHref legacyBehavior>
+                            {token &&<Link href="/search" passHref legacyBehavior>
                             <Nav.Link active={router.pathname === "/search"}>Advanced Search</Nav.Link>
-                            </Link>
+                            </Link>}
                         </Nav>
-                        <form onSubmit={Submit} className="d-flex">
+                        {token && (<form onSubmit={Submit} className="d-flex">
                             <Form.Control
                                 type="text"
                                 placeholder="Search"
@@ -56,8 +62,8 @@ export default function MainNav() {
                                 onChange={(e) => setSearchField(e.target.value)}
                             />
                             <Button type="submit" variant="contained">Submit</Button>
-                        </form>
-                        <Nav>
+                        </form>)}
+                        {token ? (<Nav>
                             <NavDropdown title="User Name" id="basic-nav-dropdown">
                             <Link href="/favourites" passHref legacyBehavior>
                                 <NavDropdown.Item active={router.pathname === "/favourites"}>Favourites</NavDropdown.Item>
@@ -65,8 +71,14 @@ export default function MainNav() {
                             <Link href="/history" passHref legacyBehavior>
                                 <NavDropdown.Item active={router.pathname === "/history"} >Search History</NavDropdown.Item>
                             </Link>
+                            <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
                            </NavDropdown>
-                        </Nav>
+                        </Nav>)
+                        :
+                        (<Nav className="ms-auto">
+                <Link href="/register" passHref legacyBehavior><Nav.Link  active={router.pathname === "/register"}>Register</Nav.Link></Link>
+                <Link href="/login" passHref legacyBehavior><Nav.Link active={router.pathname === "/login"}>Login</Nav.Link></Link>
+              </Nav>)}
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
